@@ -21,13 +21,15 @@ const fetchTopStories = async () => {
     )
 
     const topTenStories = topTenStoriesJson.map((story) => {
-      return {
+      console.log(`${story.title} \n ${story.url} \n\n`)
+      
+        return {
         title: story.title,
         url: story.url,
       }
     })
     
-    console.log(topTenStories);
+    //console.log(topTenStories);
   } catch {
     console.log("error");
   }
