@@ -14,8 +14,8 @@ const fetchTopStories = async () => {
     const topTenStoriesJson = await Promise.all(topTenStoriesReq.map((req) => req.json()));
 
     topTenStoriesJson.map((story) => {
-      console.log("\x1b[31m", `${story.title}`);
-      console.log("\x1b[34m", `${story.url} \n`);
+      console.log(`\x1b[31m${story.title}`);
+      console.log(` \x1b[34m\x1b[4m${new URL(story.url)}\x1b[0m \n`);
     });
 
     //console.log(topTenStories);
