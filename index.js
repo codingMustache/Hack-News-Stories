@@ -1,82 +1,66 @@
 import { emitKeypressEvents } from "readline";
+import { exec } from "child_process";
 
 const fetchTopStories = async () => {
   try {
-    //retrieving top news stroies IDs
-    const req = await fetch("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty");
-    const json = await req.json();
+    // Retrieving top news stories IDs
+    const response = await fetch(
+      "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty",
+    );
+    const storyIds = await response.json();
 
-    // set up var
     const pageSize = 10;
     let currentPage = 1;
+    let currentStories = [];
 
-    // paginating fn
     const paginate = async (pageNumber) => {
-      // setup for pagenation
       const start = (pageNumber - 1) * pageSize;
       const end = pageNumber * pageSize;
-      const items = json.slice(start, end);
+      const pageItems = storyIds.slice(start, end);
 
-      // call at end of list
-      if (end === undefined) {
-        console.log("You have reached the end");
-        process.exit(0);
-      }
-
-      // get info news from HN
-      const storiesReq = await Promise.all(
-        items.map(async (id) =>
-          fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`),
+      const storyDetails = await Promise.all(
+        pageItems.map((id) =>
+          fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`).then((res) =>
+            res.json(),
+          ),
         ),
       );
-      const storiesJson = await Promise.all(storiesReq.map((req) => req.json()));
 
-      // remove keys that I dont need
-      const stories = storiesJson.map((story) => {
-        return {
-          title: story.title,
-          url: story.url,
-        };
-      });
-
-      return stories;
+      return storyDetails.map(({ title, url }) => ({ title, url }));
     };
-    //
+
     const displayPage = async (pageNumber) => {
-      const stories = await paginate(pageNumber);
-      stories.map((story) => {
-        console.log(`\x1b[31m${story.title}`);
-        console.log(
-          ` \x1b[34m\x1b[4m${new URL(story.url) ? new URL(story.url) : story.url}\x1b[0m \n`,
-        );
+      currentStories = await paginate(pageNumber);
+      console.clear();
+      currentStories.forEach((story, index) => {
+        console.log(`\x1b[34m${index}: \x1b[0m${story.title}`);
       });
       console.log("-".repeat(process.stdout.columns));
     };
 
+    await displayPage(currentPage);
+
     emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode && process.stdin.setRawMode(true);
 
-    if (process.stdin.setRawMode != null) {
-      process.stdin.setRawMode(true);
-    }
-
-    let currentPageDisplay = async () => {
-      await displayPage(currentPage);
-    };
-    // run 1st call
-    currentPageDisplay();
-
-    // listener for pagination
-    process.stdin.on("keypress", async (str) => {
+    process.stdin.on("keypress", async (str, key) => {
       if (str === ".") {
         currentPage++;
         await displayPage(currentPage);
+      } else if (key.name.match(/[0-9]/) && parseInt(key.name) <= currentStories.length) {
+        const storyIndex = parseInt(key.name) - 1;
+        exec(`open ${currentStories[storyIndex].url}`, (err) => {
+          if (err) {
+            console.error("Failed to open URL:", err);
+          }
+        });
       } else {
         console.log("Exiting");
-        process.exit(0);
+        process.exit();
       }
     });
-  } catch {
-    console.log("Error");
+  } catch (error) {
+    console.error("Failed to fetch top stories:", error);
   }
 };
 
