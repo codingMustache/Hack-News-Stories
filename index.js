@@ -48,7 +48,7 @@ const fetchTopStories = async () => {
         currentPage++;
         await displayPage(currentPage);
       } else if (key.name.match(/[0-9]/) && parseInt(key.name) <= currentStories.length) {
-        const storyIndex = parseInt(key.name) - 1;
+        const storyIndex = parseInt(key.name);
         exec(`open ${currentStories[storyIndex].url}`, (err) => {
           if (err) {
             console.error("Failed to open URL:", err);
