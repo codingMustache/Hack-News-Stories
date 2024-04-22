@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { emitKeypressEvents } from "readline";
 import { exec } from "child_process";
 
