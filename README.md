@@ -1,6 +1,7 @@
 # HN-CLI-READER
 
 [![Node.js Package](https://github.com/codingMustache/Hack-News-Stories/actions/workflows/npm-publish.yml/badge.svg?branch=main&event=status)](https://github.com/codingMustache/Hack-News-Stories/actions/workflows/npm-publish.yml)
+
 This is a cli program that will allow you to paginate Hacker News in your terminal.
 
 ## How to use
