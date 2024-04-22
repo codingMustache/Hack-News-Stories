@@ -20,3 +20,11 @@ What prints looks like this:
 9:  Intel Gaudi 3 the New 128GB HBM2e AI Chip in the Wild
  ---------------------------------------------------------------------------------
 ```
+
+# To install
+
+run
+`npm install -g hn-cli-reader`
+now you can use
+`hn-cli-reader`
+to make this easier to run you can set an alias to this command
