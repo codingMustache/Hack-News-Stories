@@ -1,4 +1,4 @@
-This is a cli program that will allow you to paginate Hecker News in your terminal.
+This is a cli program that will allow you to paginate Hacker News in your terminal.
 
 ## How to use
 
@@ -7,7 +7,7 @@ Using the number, `0-9`, to the right of the story title you can open the story 
 You can exit the program using any key except `0-9` and `.`
 What prints looks like this:
 
-```shell
+```
 0:  Meta Horizon OS
 1:  Equinox.space
 2:  An Exploration of SBCL Internals (2020)
@@ -23,8 +23,4 @@ What prints looks like this:
 
 # To install
 
-run
-`npm install -g hn-cli-reader`
-now you can use
-`hn-cli-reader`
-to make this easier to run you can set an alias to this command
+run `npm install -g hn-cli-reader` now you can use `hn-cli-reader` to paginate the hacker news feed.
