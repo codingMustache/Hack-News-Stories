@@ -35,21 +35,25 @@ function printRun(runModes) {
     ? ""
     : runModes.some((arg) => /-r(?:ead)?/.test(arg))
       ? console.log(welcomeStr, instructions)
-      : console.log(welcomeStr, makeAlias, runCmds);
+      : (console.log(welcomeStr, makeAlias, runCmds), process.exit());
 }
 async function startReading(r) {
   const c = 10;
-  let l = 0;
-  printRun(r);
+  let l = 1;
   const s = await fetchTopStoriesIds();
+  console.clear();
+  printRun(r);
   let x = await paginate(s, l, c);
+  x.forEach((o, i) => {
+    console.log(`\x1b[34m${i}:  \x1b[31m${o.title}`);
+  });
   emitKeypressEvents(process.stdin);
   process.stdin.setRawMode && process.stdin.setRawMode(true);
   process.stdin.on("keypress", async (t, k) => {
     if (t === ".") {
       l++;
-      x = await paginate(s, l, c);
       console.clear();
+      x = await paginate(s, l, c);
       x.forEach((o, i) => {
         console.log(`\x1b[34m${i}:  \x1b[31m${o.title}`);
       });
