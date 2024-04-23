@@ -46,6 +46,21 @@ class HackerNewsReader {
     console.log("\x1b[32m", "-".repeat(process.stdout.columns - 2));
   }
 
+  getOpenCommand(url) {
+    const commands = {
+      darwin: "open",
+      win32: "start",
+      linux: "xdg-open",
+    };
+
+    const command = commands[process.platform];
+    if (!command) {
+      throw new Error(`Unsupported platform: ${process.platform}`);
+    }
+
+    return `${command} "${url}"`;
+  }
+
   async startReading() {
     await this.fetchTopStoriesIds();
     await this.displayPage(this.currentPage);
@@ -59,8 +74,8 @@ class HackerNewsReader {
         await this.displayPage(this.currentPage);
       } else if (key.name.match(/[0-9]/) && parseInt(key.name) <= this.currentStories.length) {
         const storyIndex = parseInt(key.name);
-        exec(`open ${this.currentStories[storyIndex].url}`, (err) => {
-          if (err) {
+        exec(this.getOpenCommand(this.currentStories[storyIndex].url), (e) => {
+          if (e) {
             console.error("Failed to open URL:", err);
           }
         });
