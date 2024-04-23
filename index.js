@@ -8,6 +8,7 @@ class HackerNewsReader {
     this.currentPage = 1;
     this.currentStories = [];
     this.storyIds = [];
+    this.runMode = "";
   }
 
   async fetchTopStoriesIds() {
@@ -40,9 +41,7 @@ class HackerNewsReader {
   async displayPage(pageNumber) {
     this.currentStories = await this.paginate(pageNumber);
     console.clear();
-    if (pageNumber === 1) {
-      this.printHelp(true);
-    }
+    this.printRun();
     this.currentStories.forEach((story, index) => {
       console.log(`\x1b[34m${index}:  \x1b[31m${story.title}`);
     });
@@ -88,23 +87,33 @@ class HackerNewsReader {
     });
   }
 
-  printHelp(passArgWithProgram) {
-    console.clear();
-    console.log("Hacker News CLI Reader");
-    if (!passArgWithProgram) {
-      console.log("Use the --read -r flag to start reading Hacker News stories.");
+  printRun() {
+    const welcomeStr = "\x1b[1m\x1b[4\x1b[4mHacker News CLI Reader\x1b[0m\n";
+    const makeAlias =
+      'Make this program an alias: \n\n\x1b[1m  alias hn="hn-cli-reader -q" \x1b[0m\n\n';
+    const runCmds =
+      "\x1b[0mUse the --read -r flag to start reading Hacker News stories\n Use the --quite -q flag to run program in quiet mode\n";
+    const instructions = "Use . to paginate\n Use 0-9 to open link in browser\n";
+    if (this.runMode === "quiet") {
+      return;
+    } else if (this.runMode === "read") {
+      console.log(welcomeStr, instructions);
+    } else {
+      console.log(welcomeStr, makeAlias, runCmds);
+      process.exit();
     }
-    console.log("Use . to paginate");
-    console.log("Use 0-9 to open link in browser");
+  }
+  setPrintMode(passedArgs) {
+    if (passedArgs.some((arg) => /-q(?:uiet)?/.test(arg))) {
+      this.runMode = "quiet";
+    } else if (passedArgs.some((arg) => /-r(?:ead)?/.test(arg))) {
+      this.runMode = "read";
+    } else {
+      this.runMode = "verbose";
+    }
   }
 }
 const pgm = new HackerNewsReader();
 const args = process.argv.slice(2);
-const [readIndex, rIndex] = [args.indexOf("--read"), args.indexOf("-r")];
-
-// Check if the --read flag is provided
-if (readIndex !== -1 || rIndex !== -1) {
-  pgm.startReading();
-} else {
-  pgm.printHelp(false);
-}
+pgm.setPrintMode(args);
+pgm.startReading();
