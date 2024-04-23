@@ -40,10 +40,12 @@ class HackerNewsReader {
   async displayPage(pageNumber) {
     this.currentStories = await this.paginate(pageNumber);
     console.clear();
+    if (pageNumber === 1) {
+      this.printHelp(true);
+    }
     this.currentStories.forEach((story, index) => {
       console.log(`\x1b[34m${index}:  \x1b[31m${story.title}`);
     });
-    console.log("\x1b[32m", "-".repeat(process.stdout.columns - 2));
   }
 
   getOpenCommand(url) {
@@ -85,7 +87,24 @@ class HackerNewsReader {
       }
     });
   }
-}
 
-const hackerNewsReader = new HackerNewsReader();
-hackerNewsReader.startReading();
+  printHelp(passArgWithProgram) {
+    console.clear();
+    console.log("Hacker News CLI Reader");
+    if (!passArgWithProgram) {
+      console.log("Use the --read -r flag to start reading Hacker News stories.");
+    }
+    console.log("Use . to paginate");
+    console.log("Use 0-9 to open link in browser");
+  }
+}
+const pgm = new HackerNewsReader();
+const args = process.argv.slice(2);
+const [readIndex, rIndex] = [args.indexOf("--read"), args.indexOf("-r")];
+
+// Check if the --read flag is provided
+if (readIndex !== -1 || rIndex !== -1) {
+  pgm.startReading();
+} else {
+  pgm.printHelp(false);
+}
