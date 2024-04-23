@@ -1,8 +1,8 @@
 # HN-CLI-READER
 
-Never leave your key board. This is a cli program that will allow you to paginate Hacker News in your terminal.
+This is a cli program that will allow you to paginate Hacker News in your terminal.
 
-# To install
+## To install
 
 run `npm install -g hn-cli-reader`
 
@@ -17,7 +17,7 @@ hn-clireader -RunMode
 | -r -read  | Runs in read mode  |
 | -q -quiet | Runs in quiet mode |
 
-| cmd | Mode information |
-| --- | ---------------- |
-| .   | Paginate         |
-| 0-1 | Open link        |
+| cmd | instruction |
+| --- | ----------- |
+| .   | Paginate    |
+| 0-1 | Open link   |

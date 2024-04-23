@@ -1,27 +1,16 @@
 {
   "name": "hn-cli-reader",
-  "version": "2.0.4",
-  "description": "This is a cli tool to get hacker news in your terminal",
+  "version": "2.0.6",
+  "description": "This is a cli tool to scroll through hacker news in your terminal",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "start": "node index.js",
-    "read": "node index.js -r",
-    "quiet": "node index.js -q"
-  },
   "bin": {
     "hn-cli-reader": "./index.js"
   },
-  "author": {
-    "name": "codingMustache",
-    "url": "https://github.com/codingMustache"
-  },
+  "author": "codingMustache software@codingMustache.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codingMustache/Hack-News-Stories.git"
-  },
-  "bugs": {
-    "url": "https://github.com/codingMustache/Hack-News-Stories/issues"
   },
   "homepage": "https://github.com/codingMustache/Hack-News-Stories",
   "keywords": ["Hacker News", "cli tool", "cli"],
