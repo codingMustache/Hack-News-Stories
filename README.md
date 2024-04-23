@@ -1,8 +1,6 @@
 # HN-CLI-READER
 
-[![Node.js Package](https://github.com/codingMustache/Hack-News-Stories/actions/workflows/npm-publish.yml/badge.svg?branch=main&event=status)](https://github.com/codingMustache/Hack-News-Stories/actions/workflows/npm-publish.yml)
-
-This is a cli program that will allow you to paginate Hacker News in your terminal.
+Never leave your key board. This is a cli program that will allow you to paginate Hacker News in your terminal.
 
 # To install
 
@@ -16,8 +14,8 @@ hn-clireader -RunMode
 
 | RunMode   | Mode information   |
 | --------- | ------------------ |
+| -r -read  | Runs in read mode  |
 | -q -quiet | Runs in quiet mode |
-| -r -read  | Runs in quiet mode |
 
 Pagination is done with `.`, using the number, `0-9`, to the right of the story title you can open the story in your default browser. You can exit the program using any key except `0-9` and `.`
 
