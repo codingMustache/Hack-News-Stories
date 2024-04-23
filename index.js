@@ -1,34 +1,32 @@
 #!/usr/bin/env node
 import { emitKeypressEvents } from "readline";
 import { exec } from "child_process";
-
 async function fetchTopStoriesIds() {
   try {
     return await (
       await fetch("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
     ).json();
-  } catch (e) {
-    throw new Error("Failed to fetch top stories:", e);
+  } catch (error) {
+    console.error("Failed to fetch top stories:", error);
+    return [];
   }
 }
-
-async function paginate(ids, pNum, pSize) {
-  const pageItems = ids.slice((pNum - 1) * pSize, pNum * pSize);
-  return (
-    await Promise.all(
-      pageItems.map(async (id) => {
-        return await (
-          await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`)
-        ).json();
-      }),
-    )
-  ).map(({ title, url }) => ({ title, url }));
+async function paginate(storyIds, pageNumber, pageSize) {
+  const pageItems = storyIds.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
+  const stories = await Promise.all(
+    pageItems.map(async (id) => {
+      const response = await fetch(
+        `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`,
+      );
+      return await response.json();
+    }),
+  );
+  return stories.map(({ title, url }) => ({ title, url }));
 }
-
 function printRun(runModes) {
   const welcomeStr = "\x1b[0m\x1b[1m\x1b[4mHacker News CLI Reader\x1b[0m\n";
   const makeAlias =
-    '\x1b[0mMake this program an alias:\n unix/linix:\n\x1b[1m  alias hn="hn-cli-reader -q" \n \x1b[0mPowershell:\n\x1b[1m   Set-Alias -Name hn -Value "hn-cli-reader -q"\x1b[0m\n\n';
+    'Make this program an alias: \n\n unix/linix:\n\x1b[1m  alias hn="hn-cli-reader -q" \n Powershell:\n\x1b[1m Set-Alias -Name hn -Value hn-cli-reader \x1b[0m\n\n';
   const runCmds =
     "\x1b[0mUse the --read -r flag to start reading Hacker News stories\n Use the --quiet -q flag to run program in quiet mode\n";
   const instructions = "Use . to paginate\n Use 0-9 to open link in browser\n";
@@ -37,46 +35,38 @@ function printRun(runModes) {
     ? ""
     : runModes.some((arg) => /-r(?:ead)?/.test(arg))
       ? console.log(welcomeStr, instructions)
-      : (console.log(welcomeStr, makeAlias, runCmds), process.exit());
+      : console.log(welcomeStr, makeAlias, runCmds);
 }
-
-async function startReading(runModes) {
-  const pageSize = 10;
-  let currentPage = 1;
-  const storyIds = await fetchTopStoriesIds();
-  const displayPage = async (pageNumber) => {
-    const currentStories = await paginate(storyIds, pageNumber, pageSize);
-    console.clear();
-    printRun(runModes);
-    currentStories.forEach((story, index) => {
-      console.log(`\x1b[34m${index}:  \x1b[31m${story.title}`);
-    });
-  };
-
-  await displayPage(currentPage);
-
+async function startReading(r) {
+  const c = 10;
+  let l = 0;
+  printRun(r);
+  const s = await fetchTopStoriesIds();
+  let x = await paginate(s, l, c);
   emitKeypressEvents(process.stdin);
   process.stdin.setRawMode && process.stdin.setRawMode(true);
-
-  process.stdin.on("keypress", async (str, key) => {
-    if (str === ".") {
-      currentPage++;
-      await displayPage(currentPage);
-    } else if (str.match(/[0-9]/)) {
-      const commands = { darwin: "open", win32: "start", linux: "xdg-open" };
+  process.stdin.on("keypress", async (t, k) => {
+    if (t === ".") {
+      l++;
+      x = await paginate(s, l, c);
+      console.clear();
+      x.forEach((o, i) => {
+        console.log(`\x1b[34m${i}:  \x1b[31m${o.title}`);
+      });
+    } else if (t.match(/[0-9]/)) {
+      const p = { darwin: "open", win32: "start", linux: "xdg-open" };
       exec(
         `${
-          commands[process.platform] ||
+          p[process.platform] ||
           (() => {
             throw new Error(`Unsupported platform: ${process.platform}`);
           })()
-        } "${storyIds[parseInt(key.name)].url}"`,
+        } "${x[parseInt(k.name)].url}"`,
       );
     } else {
       console.log("Exiting");
-      process.exit();
+      process.exit(0);
     }
   });
 }
-
 startReading(process.argv.slice(2));
