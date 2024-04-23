@@ -1,6 +1,6 @@
 {
   "name": "hn-cli-reader",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "This is a cli tool to get hacker news in your terminal",
   "main": "index.js",
   "type": "module",

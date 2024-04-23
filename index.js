@@ -90,7 +90,7 @@ class HackerNewsReader {
   printRun() {
     const welcomeStr = "\x1b[1m\x1b[4\x1b[4mHacker News CLI Reader\x1b[0m\n";
     const makeAlias =
-      'Make this program an alias: \n\n\x1b[1m  alias hn="hn-cli-reader -q" \x1b[0m\n\n';
+      'Make this program an alias: \n\n unix/linix:\n\x1b[1m  alias hn="hn-cli-reader -q" \n Powershell:\n\x1b[1m Set-Alias -Name hn -Value hn-cli-reader \x1b[0m\n\n';
     const runCmds =
       "\x1b[0mUse the --read -r flag to start reading Hacker News stories\n Use the --quite -q flag to run program in quiet mode\n";
     const instructions = "Use . to paginate\n Use 0-9 to open link in browser\n";
