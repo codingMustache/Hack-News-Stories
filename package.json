@@ -1,13 +1,13 @@
 {
   "name": "hn-cli-reader",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "This is a cli tool to get hacker news in your terminal",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js",
     "read": "node index.js -r",
-    "test": "node index.js -q"
+    "quiet": "node index.js -q"
   },
   "bin": {
     "hn-cli-reader": "./index.js"
