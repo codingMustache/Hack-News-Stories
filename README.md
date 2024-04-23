@@ -4,12 +4,24 @@
 
 This is a cli program that will allow you to paginate Hacker News in your terminal.
 
+# To install
+
+run `npm install -g hn-cli-reader`
+
 ## How to use
 
-Pagination is done with `.`
-Using the number, `0-9`, to the right of the story title you can open the story in the browser.
-You can exit the program using any key except `0-9` and `.`
-What prints looks like this:
+```
+hn-clireader -RunMode
+```
+
+| RunMode   | Mode information   |
+| --------- | ------------------ |
+| -q -quiet | Runs in quiet mode |
+| -r -read  | Runs in quiet mode |
+
+Pagination is done with `.`, using the number, `0-9`, to the right of the story title you can open the story in your default browser. You can exit the program using any key except `0-9` and `.`
+
+Run example:
 
 ```
 0:  Meta Horizon OS
@@ -22,9 +34,4 @@ What prints looks like this:
 7:  Inside the Super Nintendo cartridges
 8:  JEDEC Extends DDR5 Memory Spec to 8800 MT/S, Adds Anti-Rowhammer Features
 9:  Intel Gaudi 3 the New 128GB HBM2e AI Chip in the Wild
- ---------------------------------------------------------------------------------
 ```
-
-# To install
-
-run `npm install -g hn-cli-reader` now you can use `hn-cli-reader` to paginate the hacker news feed.
