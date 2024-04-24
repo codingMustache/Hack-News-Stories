@@ -9,7 +9,7 @@ run `npm install -g hn-cli-reader`
 ## How to use
 
 ```
-hn-clireader -RunMode
+hn-clireader -<RUN MODE>
 ```
 
 | RunMode   | Mode information   |

@@ -50,7 +50,7 @@ class HackerNewsReader {
   getOpenCommand(url) {
     const commands = {
       darwin: "open",
-      win32: "start",
+      win32: "Start-Process",
       linux: "xdg-open",
     };
 
