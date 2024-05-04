@@ -4,12 +4,18 @@ This is a cli program that will allow you to paginate Hacker News in your termin
 
 ## To install
 
-run `npm install -g hn-cli-reader`
+To install the program, you can run the following command:
 
-## How to use
-
+```bash
+  npm install -g hn-cli-reader
 ```
-hn-clireader -<RUN MODE>
+
+NOTE: You need to install the program globally to run it from the terminal.
+
+## How to Run
+
+```bash
+  hn-cli-reader -<RUN MODE>
 ```
 
 | RunMode   | Mode information   |
@@ -17,7 +23,11 @@ hn-clireader -<RUN MODE>
 | -r -read  | Runs in read mode  |
 | -q -quiet | Runs in quiet mode |
 
-| cmd | instruction |
+## How to use
+
+Once the program is running, you can use the following commands to navigate the pages.
+
+| CMD | Instruction |
 | --- | ----------- |
 | .   | Paginate    |
-| 0-1 | Open link   |
+| 0-9 | Open link   |
